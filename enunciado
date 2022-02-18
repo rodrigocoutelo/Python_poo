@@ -1,0 +1,10 @@
+Cliente pode:
+• Ver as bicicletas disponíveis na Loja;
+• Alugar bicicletas por hora (R$5/hora);
+• Alugar bicicletas por dia (R$25/dia);
+• Alugar bicicletas por semana (R$100/semana)
+• Aluguel para família, uma promoção que 3 ou mais empréstimos (de qualquer  tipo) com 30% de desconto no valor total.
+Loja pode:
+• Calcular a conta quando o cliente decidir devolver a bicicleta;
+• Mostrar o estoque de bicicletas;
+• Receber pedidos de aluguéis por hora, diários ou semanais validando a  possibilidade com o estoque e modo de aluguel existente.
