@@ -10,6 +10,7 @@ cliente3 = Cliente("Caio")
 cliente4 = Cliente("Antônio")
 cliente5 = Cliente("Cecília")
 
+
 print("\n======Lojas")
 loja1 = Loja("LocBike", 100)
 loja2 = Loja("BikeForRent", 50)
@@ -35,26 +36,26 @@ print("\n================================ Testando Exceções")
 print("\n======Lendo o estoque de um objeto diferente de loja")
 try:
   cliente4.ler_estoque("loja")
-except ValueError as e:
-  print(e)
+except Exception as e:
+  print(e, "\n\n\n\n")
 
 print("\n======Locação além do estoque da loja")
 try:
   cliente4.alugar(200, "dia", loja3)
 except Exception as e:
-  print(e)
+  print(e, "\n\n\n\n")
 
 print("\n======Locação com modalidade inválida")
 try:
   cliente5.alugar(20, "meses", loja2)
-except Exception as ve:
-  print(ve)
+except Exception as e:
+  print(e, "\n\n\n\n")
 
 print("\n======Locação com quantidade invalida")
 try:
   cliente5.alugar(-10, "dia", loja1)
 except Exception as e:
-  print(e)
+ print(e, "\n\n\n\n")
 
 
 print("\n======Um cliente tentando locar em uma loja sem devolver na loja onde alugou antes")
@@ -62,4 +63,5 @@ try:
   cliente4.alugar(1, "dia", loja3)
   cliente4.alugar(1, "hora", loja1)
 except Exception as e:
-  print(e)
+  print(e, "\n\n\n\n")
+

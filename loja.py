@@ -12,7 +12,7 @@ class Loja(object):
     self._fim = None
 
     if type(estoque) != int:
-      raise ValueError(f"Erro | Classe Loja | Metodo Construtor | parametro estoque inválido. Tipo {type(estoque)}")
+      raise Exception(f"Erro | Classe Loja | Metodo Construtor | parametro estoque inválido. Tipo {type(estoque)}")
 
     print(f"Classe Loja | Metodo Construtor | Cria instância de Loja\n{self}\n")
 
@@ -20,17 +20,19 @@ class Loja(object):
     return f"[Loja -> Id: {self._id}|Nome: {self.nome}|Estoque: {self._estoque}]\n"
 
   def mostrar_estoque(self)->int:
-    print(f"Classe Loja | Metodo mostrar_estoque | Loja {self.nome} mostra o estoque ao Cliente\n")
+    print(f"Classe Loja | Metodo mostrar_estoque | Loja {self.nome} mostra o estoque de {self._estoque} bicletas ao Cliente\n")
     return self._estoque
 
   def locar(self, cliente):
     if cliente.quantidade > self._estoque:
-      raise Exception(f"Erro | Classe Loja | Metodo locar | Loja {self.nome} com estoque indisponível")
+      raise Exception(f"Erro | Classe Loja | Metodo locar | Loja {self.nome} com estoque indisponível. Solicitado: {cliente.quantidade} - Disponível {self._estoque}")
+
+    if cliente.hora_aluguel != None :
+      raise Exception(f"Erro | Classe Loja | Metodo locar | Cliente {cliente.nome} já tem uma locação em andamento")
 
     if cliente.quantidade <= 0 :
-      raise ValueError(f"Erro | Classe Loja | Metodo locar | parametro loja inválido. Quantidade 0 ou negativa [{cliente.quantidade}] ")
-    if cliente.hora_aluguel != None :
-      raise ValueError(f"Erro | Classe Loja | Metodo locar | Cliente {cliente.nome} já tem uma locação em andamento")
+      raise Exception(f"Erro | Classe Loja | Metodo locar | parametro loja inválido. Quantidade 0 ou negativa [{cliente.quantidade}] ")
+
 
     cliente.hora_aluguel = dt.datetime.now()
     self._estoque -= cliente.quantidade
