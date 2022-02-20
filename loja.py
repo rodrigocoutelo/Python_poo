@@ -1,8 +1,6 @@
 import random
 import datetime as dt
 
-from cliente import Cliente
-
 
 class Loja(object):
 
@@ -22,43 +20,60 @@ class Loja(object):
     return f"[Loja -> Id: {self._id}|Nome: {self.nome}|Estoque: {self._estoque}]\n"
 
   def mostrar_estoque(self)->int:
-    print(f"Classe Loja | Metodo mostrar_estoque | Loja {self.nome} mostra o estoque ao Cliente\n{self}\n")
+    print(f"Classe Loja | Metodo mostrar_estoque | Loja {self.nome} mostra o estoque ao Cliente\n")
     return self._estoque
 
-  def locar(self, cliente) -> Cliente:
+  def locar(self, cliente):
     if cliente.quantidade > self._estoque:
       raise Exception(f"Erro | Classe Loja | Metodo locar | Loja {self.nome} com estoque indisponível")
-    if not isinstance(cliente,Cliente):
-      raise Exception(f"Erro | Classe Loja | Metodo locar | parametro loja inválido. Tipo {type(cliente)}")
+
+    if cliente.quantidade <= 0 :
+      raise ValueError(f"Erro | Classe Loja | Metodo locar | parametro loja inválido. Quantidade 0 ou negativa [{cliente.quantidade}] ")
+    if cliente.hora_aluguel != None :
+      raise ValueError(f"Erro | Classe Loja | Metodo locar | Cliente {cliente.nome} já tem uma locação em andamento")
+
+    cliente.hora_aluguel = dt.datetime.now()
     self._estoque -= cliente.quantidade
-    self._inicio = cliente.hora_aluguel
-    print(f"Classe Loja | Metodo locar | Loja {self.nome} recebe pedido de locação do Cliente {cliente.nome}\n")
+    self._inicio = dt.datetime.now()
+
+    print(f"Classe Loja | Metodo locar | Loja {self.nome} recebe pedido de locação do Cliente {cliente.nome}\n{cliente}\n")
     return cliente
 
-  def receber(self, cliente:Cliente) -> float:
-    print(f"Classe Loja | Metodo receber | Loja {self.nome} recebeu os produtos de volta do Cliente {cliente.nome} e vai processar os cálculos\n")
+  def receber(self, cliente) -> float:
+    print(f"Classe Loja | Metodo receber | Loja {self.nome} recebeu os produtos de volta do Cliente {cliente.nome} e vai cálcular o valor da locação\n{self}\n{cliente}\n")
     self._estoque += cliente.quantidade
     self._fim = cliente.hora_aluguel
     valor_locacao = self.calcula_valor_locacao(cliente)
+    print(f"Classe Loja | Metodo receber | Loja {self.nome} devolve o valor da locação ao Cliente {cliente.nome}\n{self}\n{cliente}\n")
     return valor_locacao
 
-  def calcula_valor_locacao(self, cliente:Cliente)->float:
-    print(f"Classe Loja | Metodo calcula_valor_locacao | Loja {self.nome} calcula o valor da locação\n")
-    duracao_locacao = self.calcula_tempo_locacao()
+  def calcula_valor_locacao(self, cliente)->float:
+    print(f"Classe Loja | Metodo calcula_valor_locacao | Loja {self.nome} calcula o valor da locação do Cliente {cliente.nome}\n{self}\n{cliente}\n")
+    duracao_locacao = self.calcula_tempo_locacao(cliente)
     if cliente.modalidade == "hora":
-      valor_locacao = cliente.duracao_locacao * 5 * cliente.quantidade
+      valor_locacao = duracao_locacao * 5 * cliente.quantidade
     elif cliente.modalidade == "dia":
-      valor_locacao = cliente.duracao_locacao * 25 * cliente.quantidade
+      valor_locacao = duracao_locacao * 25 * cliente.quantidade
     elif cliente.modalidade == "semana":
-       valor_locacao = cliente.duracao_locacao * 100 * cliente.quantidade
+       valor_locacao = duracao_locacao * 100 * cliente.quantidade
 
     if self.is_elegivel_desconto(cliente):
       valor_locacao = 0.7 * valor_locacao
-    print(f"Classe Loja | Metodo is_elegivel_desconto | Loja {self.nome} checa se o produto é elegivel de desconto | Retorno {self.is_elegivel_desconto(cliente)}\n")
+    print(f"Classe Loja | Metodo is_elegivel_desconto | Loja {self.nome} checa se o produto é elegivel de desconto | Retorno {self.is_elegivel_desconto(cliente)}\n{cliente}\n")
     return valor_locacao
 
 
-  def is_elegivel_desconto(self, cliente:Cliente)->bool:
+  def calcula_tempo_locacao(self, cliente):
+    if self._fim == None:
+       self._fim = dt.datetime.now()
+
+    duracao_em_segundos = (self._fim - self._inicio).total_seconds()
+    print(f"Classe Locação | Método calcula_tempo_locacao | Calcula o tempo da locação na base escolhida no momento da locação \n{self}\n{cliente}\n")
+    duracao_locacao = round(duracao_em_segundos / cliente._base_locacao,2)
+    cliente.duracao_locacao = duracao_locacao
+    return duracao_locacao
+
+  def is_elegivel_desconto(self, cliente)->bool:
     if (cliente.quantidade >= 3):
       return True
     return False
