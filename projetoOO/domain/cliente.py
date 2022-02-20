@@ -1,6 +1,7 @@
 import random
-from domain.loja import Loja
+from domain import classes
 
+Loja = classes["loja"]
 class Cliente(object):
 
   _HORA = "hora"

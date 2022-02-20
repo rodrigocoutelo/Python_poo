@@ -1,11 +1,11 @@
 import datetime as dt
-import domain.cliente
+import domain as d
 
 
 print("\n================================ Instanciando Objetos")
 print("\n======Clientes")
-cliente1 = domain.Cliente("Rodrigo")
-cliente2 = Cliente("Marcos")
+cliente1 = d.Cliente("Rodrigo")
+cliente2 = d.Cliente("Marcos")
 cliente3 = d.Cliente("Caio")
 cliente4 = d.Cliente("Antônio")
 cliente5 = d.Cliente("Cecília")

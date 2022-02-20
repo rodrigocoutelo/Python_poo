@@ -1,7 +1,9 @@
 import random
 import datetime as dt
-from domain.cliente import Cliente
+from domain import classes
 
+
+Cliente = classes["cliente"]
 class Loja(object):
 
   def __init__(self, nome:str, estoque:int):
